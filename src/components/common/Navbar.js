@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import { NavLink } from 'react-router-dom'
 
 class Navbar extends Component {
   render () {
@@ -7,7 +8,13 @@ class Navbar extends Component {
       <ul>
         {
           menuItemModels.map(
-            itemModel => <li>{itemModel.name}</li>
+            (itemModel, idx) => <li key={idx}>
+              <NavLink
+                  to={itemModel.uri}
+                  exact>
+                  {itemModel.name}
+              </NavLink>
+            </li>
           )
         }
       </ul>
