@@ -1,5 +1,6 @@
 import {Component} from 'react'
-import {Navbar as Nav} from './components/common/Navbar'
+// import Nav from './components/common/Navbar'
+import Nav from './components/common/MaterialNavbar'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import RouteModel from './models/RouteModel'
 import Home from './components/pages/Home'
