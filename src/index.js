@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import { Provider } from 'mobx-react'
+import todoStore from './stores/TodoStore'
 // import reportWebVitals from './reportWebVitals';
 
 /* ReactDOM.render(
@@ -10,8 +12,14 @@ import App from './App'
   document.getElementById('root')
 ); */
 
+const stores = {
+  todoStore
+}
+
 ReactDOM.render(
-    <App />,
+  <Provider {...stores}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 )
 

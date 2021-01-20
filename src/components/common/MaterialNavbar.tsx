@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { NavLink } from 'react-router-dom'
-import {Drawer, IconButton, List, ListItem, Theme, Toolbar, WithStyles, withStyles} from '@material-ui/core'
+import {Drawer, IconButton, List, ListItem, ListItemText, Theme, Toolbar, WithStyles, withStyles} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import RouteModel from '../../models/RouteModel'
 import { Typography } from '@material-ui/core'
@@ -62,11 +62,13 @@ class MaterialNavbar extends Component<IProps, IState> {
             menuItemModels.map(
               (itemModel, idx) => (
               <ListItem button key={idx}>
-                <NavLink
-                    to={itemModel.uri}
-                    exact>
-                    {itemModel.name}
-                </NavLink>
+                <ListItemText>
+                  <NavLink
+                      to={itemModel.uri}
+                      exact>
+                      {itemModel.name}
+                  </NavLink>
+                </ListItemText>
               </ListItem>)
             )
           }
