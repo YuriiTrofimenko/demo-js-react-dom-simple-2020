@@ -1,6 +1,7 @@
 // import classes from '*.module.css'
 import { WithStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles"
-import { Card, CardContent, Typography, CardActions, Button, Grid } from '@material-ui/core'
+import { Card, CardContent, Typography, CardActions, Button, Grid, IconButton } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import {inject, observer} from 'mobx-react'
 import React, { Component } from 'react'
 import TodoItemModel from '../../models/TodoItemModel'
@@ -14,8 +15,14 @@ interface IState {
 }
 
 const styles = (theme: Theme) => createStyles({
-  root: {
+  card: {
     minWidth: 275,
+    minHeight: 167
+  },
+  cardContent: {
+    minWidth: 275,
+    minHeight: 167,
+    textAlign: 'center'
   },
   bullet: {
     display: 'inline-block',
@@ -46,7 +53,7 @@ class StyledTodoList extends Component<IProps, IState> {
       {
         todoList.map((todoItem, idx) => (
             <Grid item key={idx} xs={12} sm={6} lg={4} xl={3}>
-              <Card className={classes.root}>
+              <Card className={classes.card}>
                 <CardContent>
                   <Typography variant="h5" component="h2">
                     {todoItem.title}
@@ -65,6 +72,18 @@ class StyledTodoList extends Component<IProps, IState> {
             </Grid>
         ))
       }
+      <Grid item xs={12} sm={6} lg={4} xl={3}>
+        <Card className={classes.cardContent}>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              Add a New ToDo
+            </Typography>
+            <IconButton href=''>
+                <AddIcon/>
+            </IconButton>
+          </CardContent>
+        </Card>
+      </Grid>
     </Grid>
   }
 }
