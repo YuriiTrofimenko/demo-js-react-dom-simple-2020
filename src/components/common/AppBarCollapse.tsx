@@ -1,10 +1,8 @@
 import React, {Component} from "react"
-import {MenuItem, WithStyles} from "@material-ui/core"
-import { withStyles } from "@material-ui/core/styles"
+import { MenuItem } from "@material-ui/core"
+import { WithStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles"
 import ButtonAppBarCollapse from "./ButtonAppBarCollapse"
-import {
-    NavLink
-} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import RouteModel from "../../models/RouteModel"
 
 interface IProps extends WithStyles<typeof styles> {
@@ -14,49 +12,44 @@ interface IProps extends WithStyles<typeof styles> {
 interface IState {
 }
 
-const styles = theme => ({
-    root: {
-        position: "absolute",
-        right: 0,
-    },
-    buttonBar: {
-        [theme.breakpoints.down("xs")]: {
-            display: "none"
-        },
-        margin: "10px",
-        paddingLeft: "16px",
-        right: "10px",
-        position: "relative",
-        width: "100%",
-        background: "transparent",
-        display: "inline"
-    },
-    buttonBarItem: {
-        webkitTransition: 'background-color .3s',
-        transition: 'background-color .3s',
-        fontSize: '1rem',
-        color: '#fff',
-        padding: '15px',
-        cursor: 'pointer',
-        textDecoration: 'none'
-    },
-    buttonBarItemActive: {
-        backgroundColor: '#ea454b',
-    },
-    mobileButtonBarItem: {
-        textDecoration: 'none',
-    },
-    mobileButtonBarItemActive: {
-        backgroundColor: '#ccc',
-    }
+const styles = (theme: Theme) => createStyles({
+  root: {
+      position: "absolute",
+      right: 0,
+  },
+  buttonBar: {
+      [theme.breakpoints.down("xs")]: {
+          display: "none"
+      },
+      margin: "10px",
+      paddingLeft: "16px",
+      right: "10px",
+      position: "relative",
+      width: "100%",
+      background: "transparent",
+      display: "inline"
+  },
+  buttonBarItem: {
+      webkitTransition: 'background-color .3s',
+      transition: 'background-color .3s',
+      fontSize: '1rem',
+      color: '#fff',
+      padding: '15px',
+      cursor: 'pointer',
+      textDecoration: 'none'
+  },
+  buttonBarItemActive: {
+      backgroundColor: '#ea454b',
+  },
+  mobileButtonBarItem: {
+      textDecoration: 'none',
+  },
+  mobileButtonBarItemActive: {
+      backgroundColor: '#ccc',
+  }
 })
 
-@observer
 class AppBarCollapse extends Component<IProps, IState> {
-
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         const { classes } = this.props
@@ -64,32 +57,30 @@ class AppBarCollapse extends Component<IProps, IState> {
         return (
             <div className={classes.root}>
                 <ButtonAppBarCollapse>
-                {routes.map(route => {
-                    /* выводим на панель навигации ссылки только на те разделы сайта,
-                    * в имени модели роута которых не встречается шаблон:
-                    * слово Dashboard + один или более символов латинского алфавита
-                    * в верхнем или нижнем регистре
-                    * (так пользователь администратор увидит ссылку на главную страницу админпанели,
-                    * но не увидит лишние ссылки на разделы админпанели) */
-                    if(!/^Dashboard[A-z]+$/.test(route.name)) {
-                        return <MenuItem>
-                            <NavLink
-                                key={route.path}
-                                as={NavLink}
-                                to={route.path}
-                                className={classes.mobileButtonBarItem}
-                                activeClassName={classes.mobileButtonBarItemActive}
-                                exact>
-                                {route.name}
-                            </NavLink>
-                        </MenuItem>
-                    } else {
-                        return ''
-                    }
-                })}
+                  {routes.map((route: RouteModel) => {
+                      /* выводим на панель навигации ссылки только на те разделы сайта,
+                      * в имени модели роута которых не встречается шаблон:
+                      * слово Dashboard + один или более символов латинского алфавита
+                      * в верхнем или нижнем регистре
+                      * (так пользователь администратор увидит ссылку на главную страницу админпанели,
+                      * но не увидит лишние ссылки на разделы админпанели) */
+                      if(!/^Dashboard[A-z]+$/.test(route.name)) {
+                          return <MenuItem key={route.uri}>
+                              <NavLink
+                                  to={route.uri}
+                                  className={classes.mobileButtonBarItem}
+                                  activeClassName={classes.mobileButtonBarItemActive}
+                                  exact>
+                                  {route.name}
+                              </NavLink>
+                          </MenuItem>
+                      } else {
+                          return ''
+                      }
+                  })}
                 </ButtonAppBarCollapse>
                 <div className={classes.buttonBar} id="appbar-collapse">
-                    {routes.map(route => {
+                    {routes.map((route: RouteModel) => {
                         /* выводим на панель навигации ссылки только на те разделы сайта,
                         * в имени модели роута которых не встречается шаблон:
                         * слово Dashboard + один или более символов латинского алфавита
@@ -98,9 +89,8 @@ class AppBarCollapse extends Component<IProps, IState> {
                         * но не увидит лишние ссылки на разделы админпанели)*/
                         if(!/^Dashboard[A-z]+$/.test(route.name)) {
                             return <NavLink
-                                    key={route.path}
-                                    as={NavLink}
-                                    to={route.path}
+                                    key={route.uri}
+                                    to={route.uri}
                                     // можно указать в двойных кавычках имя
                                     // класса стиля, описанного в css
                                     className={classes.buttonBarItem}

@@ -1,6 +1,6 @@
 import React, {Component} from "react"
-import { Theme, withStyles } from "@material-ui/core/styles"
-import {Menu, WithStyles} from "@material-ui/core"
+import { Theme, withStyles, WithStyles, createStyles} from "@material-ui/core/styles"
+import {Menu} from "@material-ui/core"
 import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from '@material-ui/icons/Menu'
 
@@ -12,7 +12,7 @@ interface IState {
     anchorEl: any
 }
 
-const styles = (theme: Theme) => ({
+const styles = (theme: Theme) => createStyles({
     buttonCollapse: {
         [theme.breakpoints.up("sm")]: {
             display: "none"

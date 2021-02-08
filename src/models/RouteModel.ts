@@ -1,12 +1,12 @@
-import { FC } from "react"
+import { FC } from 'react'
 
 export default class RouteModel {
   public uri: string
   public name: string
-  public component: FC
-  constructor (uri: string, name: string, component: FC) {
+  public Component: FC | React.ComponentType<Readonly<any>>
+  constructor (uri: string, name: string, Component: FC | React.ComponentType<Readonly<any>>) {
     this.name = name
     this.uri = uri
-    this.component = component
+    this.Component = Component
   }
 }
