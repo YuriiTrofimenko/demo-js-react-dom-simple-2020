@@ -58,53 +58,33 @@ class AppBarCollapse extends Component<IProps, IState> {
             <div className={classes.root}>
                 <ButtonAppBarCollapse>
                   {routes.map((route: RouteModel) => {
-                      /* выводим на панель навигации ссылки только на те разделы сайта,
-                      * в имени модели роута которых не встречается шаблон:
-                      * слово Dashboard + один или более символов латинского алфавита
-                      * в верхнем или нижнем регистре
-                      * (так пользователь администратор увидит ссылку на главную страницу админпанели,
-                      * но не увидит лишние ссылки на разделы админпанели) */
-                      if(!/^Dashboard[A-z]+$/.test(route.name)) {
-                          return <MenuItem key={route.uri}>
-                              <NavLink
-                                  to={route.uri}
-                                  className={classes.mobileButtonBarItem}
-                                  activeClassName={classes.mobileButtonBarItemActive}
-                                  exact>
-                                  {route.name}
-                              </NavLink>
-                          </MenuItem>
-                      } else {
-                          return ''
-                      }
+                    return <MenuItem key={route.uri}>
+                        <NavLink
+                            to={route.uri}
+                            className={classes.mobileButtonBarItem}
+                            activeClassName={classes.mobileButtonBarItemActive}
+                            exact>
+                            {route.name}
+                        </NavLink>
+                    </MenuItem>
                   })}
                 </ButtonAppBarCollapse>
                 <div className={classes.buttonBar} id="appbar-collapse">
                     {routes.map((route: RouteModel) => {
-                        /* выводим на панель навигации ссылки только на те разделы сайта,
-                        * в имени модели роута которых не встречается шаблон:
-                        * слово Dashboard + один или более символов латинского алфавита
-                        * в верхнем или нижнем регистре
-                        * (так пользователь администратор увилит ссылку на главную страницу админпанели,
-                        * но не увидит лишние ссылки на разделы админпанели)*/
-                        if(!/^Dashboard[A-z]+$/.test(route.name)) {
-                            return <NavLink
-                                    key={route.uri}
-                                    to={route.uri}
-                                    // можно указать в двойных кавычках имя
-                                    // класса стиля, описанного в css
-                                    className={classes.buttonBarItem}
-                                    // , а в данном случае создается экранирование
-                                    // фигурными скобками, и внутри него
-                                    // указывается имя класса стиля,
-                                    // определенного в константе styles
-                                    activeClassName={classes.buttonBarItemActive}
-                                    exact>
-                                    {route.name}
-                                </NavLink>
-                        } else {
-                            return ''
-                        }
+                      return <NavLink
+                          key={route.uri}
+                          to={route.uri}
+                          // можно указать в двойных кавычках имя
+                          // класса стиля, описанного в css
+                          className={classes.buttonBarItem}
+                          // , а в данном случае создается экранирование
+                          // фигурными скобками, и внутри него
+                          // указывается имя класса стиля,
+                          // определенного в константе styles
+                          activeClassName={classes.buttonBarItemActive}
+                          exact>
+                          {route.name}
+                      </NavLink>
                     })}
                 </div>
             </div>

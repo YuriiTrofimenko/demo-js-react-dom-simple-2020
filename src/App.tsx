@@ -4,7 +4,7 @@ import {CSSTransition} from 'react-transition-group'
 import RouteModel from './models/RouteModel'
 import Home from './components/pages/Home'
 import About from './components/pages/About'
-import TodoList from './components/pages/TodoList'
+import TodoList from './components/pages/StyledTodoList'
 import { AppBar, Container, Toolbar, Typography, withStyles, WithStyles, Theme, createStyles } from '@material-ui/core'
 import AppBarCollapse from './components/common/AppBarCollapse'
 
@@ -72,24 +72,11 @@ class App extends Component<IProps, IState> {
     return (
       <>
         <Router>
-          {/* <Nav itemModels={menuItemModels}/>
-          <Switch>
-              {
-                  menuItemModels.map(
-                      (routeModel, idx) =>
-                          <Route
-                              key={idx}
-                              exact
-                              path={routeModel.uri}
-                              component={routeModel.component}/>
-                      )
-              }
-          </Switch> */}
           <div className={classes.root}>
             <AppBar position='sticky' className={classes.navBar}>
                 <Toolbar>
                     <Typography variant='h6' className={classes.title}>
-                        SpringReactSPA
+                        SimpleReactSPA
                     </Typography>
                     <AppBarCollapse routes={menuItemModels} />
                 </Toolbar>
