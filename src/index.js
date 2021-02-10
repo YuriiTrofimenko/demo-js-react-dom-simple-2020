@@ -17,9 +17,9 @@ const stores = {
 }
 
 ReactDOM.render(
-  <Provider {...stores}>
-    <App />
-  </Provider>,
+    <Provider {...stores}>
+      <App />
+    </Provider>,
   document.getElementById('root')
 )
 
