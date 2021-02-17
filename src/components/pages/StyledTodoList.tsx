@@ -73,6 +73,9 @@ class StyledTodoList extends Component<IProps, IState> {
   todoTitleChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.props.todoStore.setTodoTitle(e.target.value)
   }
+  todoDescriptionChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.todoStore.setTodoDescription(e.target.value)
+  }
   todoDateChangedHandler = (date: Date | null) => {
     this.props.todoStore.setTodoDate(date)
   }
@@ -152,6 +155,15 @@ class StyledTodoList extends Component<IProps, IState> {
               type="text"
               fullWidth
               onChange={this.todoTitleChangedHandler}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="descriptionInput"
+              label="Title"
+              type="text"
+              fullWidth
+              onChange={this.todoDescriptionChangedHandler}
             />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
