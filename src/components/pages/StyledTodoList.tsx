@@ -23,6 +23,9 @@ const styles = (theme: Theme) => createStyles({
     minWidth: 275,
     minHeight: 167
   },
+  newTaskCard: {
+    backgroundColor: 'lightyellow'
+  },
   cardContent: {
     minWidth: 275,
     minHeight: 167,
@@ -114,7 +117,7 @@ class StyledTodoList extends Component<IProps, IState> {
           {
             todoList.map((todoItem, idx) => (
                 <Grid item key={idx} xs={12} sm={6} lg={4} xl={3}>
-                  <Card className={classes.card}>
+                  <Card className={classes.card && classes.newTaskCard}>
                     <CardContent>
                       <Typography variant="h5" component="h2">
                         {todoItem.title}
@@ -160,7 +163,7 @@ class StyledTodoList extends Component<IProps, IState> {
               autoFocus
               margin="dense"
               id="descriptionInput"
-              label="Title"
+              label="Description"
               type="text"
               fullWidth
               onChange={this.todoDescriptionChangedHandler}

@@ -35,6 +35,9 @@ class TodoStore {
   @action setTodoDone (done: Boolean): void {
     this.todoDone = done
   }
+  @action setCurrentTodo (id: number): void {
+    this.currentTodo = this.todoList.find(todo => todo.id === id) ?? null
+  }
   @action addTodoItem (): void {
     console.log('addTodoItem')
     this.todoList.unshift(
