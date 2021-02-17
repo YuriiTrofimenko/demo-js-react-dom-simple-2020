@@ -38,7 +38,7 @@ class TodoStore {
   @action addTodoItem (): void {
     console.log('addTodoItem')
     this.todoList.unshift(
-      new TodoItemModel(this.todoTitle, 'demo description', this.todoDate)
+      new TodoItemModel(this.todoTitle, this.todoDescription, this.todoDate)
     )
   }
 }
