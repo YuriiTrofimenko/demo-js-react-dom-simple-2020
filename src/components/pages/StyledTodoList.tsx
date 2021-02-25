@@ -2,6 +2,8 @@
 import { WithStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles"
 import { Card, CardContent, Typography, CardActions, Button, Grid, IconButton, Fab, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
+import DoneIcon from '@material-ui/icons/Done'
 import {inject, observer} from 'mobx-react'
 import React, { Component } from 'react'
 import { TodoStore } from "../../stores/TodoStore"
@@ -15,7 +17,7 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 interface IState {
-  addTodoDialogOpen: boolean
+  todoDialogOpen: boolean
 }
 
 const styles = (theme: Theme) => createStyles({
@@ -33,6 +35,16 @@ const styles = (theme: Theme) => createStyles({
     minWidth: 275,
     minHeight: 167,
     textAlign: 'center'
+  },
+  desktopCardActions: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none"
+    }
+  },
+  mobileCardActions: {
+    [theme.breakpoints.up("sm")]: {
+      display: "none"
+    }
   },
   addCardCell: {
     [theme.breakpoints.down("xs")]: {
@@ -67,7 +79,7 @@ class StyledTodoList extends Component<IProps, IState> {
   constructor (props: IProps) {
     super(props)
     this.state = {
-      addTodoDialogOpen: false
+      todoDialogOpen: false
     }
   }
   componentDidMount() {
@@ -92,21 +104,28 @@ class StyledTodoList extends Component<IProps, IState> {
   }
   // открыть диалог добавления
   addTodoControlClickHandler = () => {
-    this.setState({addTodoDialogOpen: true})
+    this.setState({todoDialogOpen: true})
   }
-  addTodoDialogCancelHandler = () => {
-    this.setState({addTodoDialogOpen: false})
+  // открыть диалог редактирования
+  startEditTodoHandler = (todoItemId: number) => {
+    this.props.todoStore.setCurrentTodoId(todoItemId)
+    this.setState({todoDialogOpen: true})
   }
-  addTodoDialogAddHandler = () => {
+  todoDialogCancelHandler = () => {
+    this.setState({todoDialogOpen: false})
+    this.props.todoStore.setCurrentTodoId(null)
+  }
+  todoDialogOkHandler = () => {
     this.props.todoStore.saveTodoItem()
-    this.setState({addTodoDialogOpen: false})
+    this.setState({todoDialogOpen: false})
   }
-  addTodoDialogClosedHandler = () => {
-    this.setState({addTodoDialogOpen: false})
+  todoDialogClosedHandler = () => {
+    this.setState({todoDialogOpen: false})
+    this.props.todoStore.setCurrentTodoId(null)
   }
   render () {
     const { classes } = this.props
-    const {todoList} = this.props.todoStore
+    const { todoList, currentTodoId, todoTitle, todoDescription, todoDate } = this.props.todoStore
     return (
       <>
         <Grid container spacing={3}>
@@ -138,7 +157,14 @@ class StyledTodoList extends Component<IProps, IState> {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={() => this.todoIsDoneChangedHandler(todoItem.id)} size="small">Done</Button>
+                      <div className={classes.desktopCardActions}>
+                        <Button onClick={() => this.startEditTodoHandler(todoItem.id)} size="small">Edit</Button>
+                        <Button onClick={() => this.todoIsDoneChangedHandler(todoItem.id)} size="small">Done</Button>
+                      </div>
+                      <div className={classes.mobileCardActions}>
+                        <Button onClick={() => this.startEditTodoHandler(todoItem.id)} size="small"><EditIcon/></Button>
+                        <Button onClick={() => this.todoIsDoneChangedHandler(todoItem.id)} size="small"><DoneIcon/></Button>
+                      </div>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -153,10 +179,12 @@ class StyledTodoList extends Component<IProps, IState> {
           <AddIcon />
         </Fab>
         <Dialog
-          open={this.state.addTodoDialogOpen}
-          onClose={this.addTodoDialogClosedHandler}
+          open={this.state.todoDialogOpen}
+          onClose={this.todoDialogClosedHandler}
           aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Add a New Todo Item</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {currentTodoId ? 'Edit Selected ToDo' : 'Add a New ToDo'}
+          </DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -165,6 +193,7 @@ class StyledTodoList extends Component<IProps, IState> {
               label="Title"
               type="text"
               fullWidth
+              value={todoTitle}
               onChange={this.todoTitleChangedHandler}
             />
             <TextField
@@ -174,6 +203,7 @@ class StyledTodoList extends Component<IProps, IState> {
               label="Description"
               type="text"
               fullWidth
+              value={todoDescription}
               onChange={this.todoDescriptionChangedHandler}
             />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -182,7 +212,7 @@ class StyledTodoList extends Component<IProps, IState> {
                 id="date-picker-dialog"
                 label="Date picker dialog"
                 format="dd/MM/yyyy"
-                value={this.props.todoStore.todoDate}
+                value={todoDate}
                 onChange={this.todoDateChangedHandler}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
@@ -191,11 +221,11 @@ class StyledTodoList extends Component<IProps, IState> {
             </MuiPickersUtilsProvider>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.addTodoDialogCancelHandler} color="primary">
+            <Button onClick={this.todoDialogCancelHandler} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.addTodoDialogAddHandler} color="primary">
-              Add
+            <Button onClick={this.todoDialogOkHandler} color="primary">
+              {currentTodoId ? 'Edit' : 'Add'}
             </Button>
           </DialogActions>
         </Dialog>

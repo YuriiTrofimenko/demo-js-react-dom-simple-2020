@@ -34,9 +34,10 @@ class TodoStore {
   @action setTodoDone (done: Boolean): void {
     this.todoDone = done
   }
-  @action setCurrentTodoId (id: number): void {
+  @action setCurrentTodoId (id: number | null): void {
     this.currentTodoId = id
-    const currentTodo =
+    if (id) {
+      const currentTodo =
         this.todoList.find(todo => todo.id === this.currentTodoId) ?? null
       if (currentTodo) {
         this.todoTitle = currentTodo.title
@@ -44,6 +45,12 @@ class TodoStore {
         this.todoDate = currentTodo.date
         this.todoDone = currentTodo.done
       }
+    } else {
+      this.todoTitle = ''
+      this.todoDescription = ''
+      this.todoDate = new Date()
+      this.todoDone = false
+    }
   }
   @action saveTodoItem (): void {
     // add a new item
@@ -62,7 +69,7 @@ class TodoStore {
         currentTodo.done = this.todoDone
       }
     }
-    this.currentTodoId = null
+    this.setCurrentTodoId(null)
     this.fetchTodoList()
   }
   /* @action editTodoItem (): void {
