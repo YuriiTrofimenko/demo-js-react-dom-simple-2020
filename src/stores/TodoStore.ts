@@ -1,9 +1,10 @@
 import {action, makeObservable, observable} from 'mobx'
 import TodoItemModel from '../models/TodoItemModel'
+import FakeAPI from '../utils/FakeAPI'
 
 class TodoStore {
   @observable todoList: TodoItemModel[] = []
-  @observable currentTodo: TodoItemModel | null = null
+  @observable currentTodoId: number | null = null
   @observable todoTitle: String = ''
   @observable todoDescription: String = ''
   @observable todoDate: Date = new Date()
@@ -17,9 +18,7 @@ class TodoStore {
   @action fetchTodoList (): void {
     this.todoList.length = 0
     this.todoList.unshift(
-      new TodoItemModel('t1', 'd1', new Date()),
-      new TodoItemModel('t2', 'd2', new Date()),
-      new TodoItemModel('t3', 'd3', new Date())
+      ...FakeAPI.todoList
     )
   }
   @action setTodoTitle (title: String): void {
@@ -35,15 +34,45 @@ class TodoStore {
   @action setTodoDone (done: Boolean): void {
     this.todoDone = done
   }
-  @action setCurrentTodo (id: number): void {
-    this.currentTodo = this.todoList.find(todo => todo.id === id) ?? null
+  @action setCurrentTodoId (id: number): void {
+    this.currentTodoId = id
+    const currentTodo =
+        this.todoList.find(todo => todo.id === this.currentTodoId) ?? null
+      if (currentTodo) {
+        this.todoTitle = currentTodo.title
+        this.todoDescription = currentTodo.description
+        this.todoDate = currentTodo.date
+        this.todoDone = currentTodo.done
+      }
   }
-  @action addTodoItem (): void {
-    console.log('addTodoItem')
-    this.todoList.unshift(
-      new TodoItemModel(this.todoTitle, this.todoDescription, this.todoDate)
-    )
+  @action saveTodoItem (): void {
+    // add a new item
+    if(!this.currentTodoId) {
+      FakeAPI.todoList.unshift(
+        new TodoItemModel(this.todoTitle, this.todoDescription, this.todoDate)
+      )
+    } else {
+      // edit selected item
+      const currentTodo =
+        FakeAPI.todoList.find(todo => todo.id === this.currentTodoId) ?? null
+      if (currentTodo) {
+        currentTodo.title = this.todoTitle
+        currentTodo.description = this.todoDescription
+        currentTodo.date = this.todoDate
+        currentTodo.done = this.todoDone
+      }
+    }
+    this.currentTodoId = null
+    this.fetchTodoList()
   }
+  /* @action editTodoItem (): void {
+    if(this.currentTodo) {
+      this.currentTodo =
+        Object.assign(this.currentTodo, { done: this.todoDone })
+    }
+    console.log('this.currentTodo', this.currentTodo)
+    console.log('this.todoList', this.todoList)
+  } */
 }
 
 export { TodoStore }

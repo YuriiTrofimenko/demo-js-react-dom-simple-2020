@@ -26,6 +26,9 @@ const styles = (theme: Theme) => createStyles({
   newTaskCard: {
     backgroundColor: 'lightyellow'
   },
+  completedTaskCard: {
+    backgroundColor: 'lightgreen'
+  },
   cardContent: {
     minWidth: 275,
     minHeight: 167,
@@ -70,7 +73,7 @@ class StyledTodoList extends Component<IProps, IState> {
   componentDidMount() {
     this.props.todoStore.fetchTodoList()
     /* setTimeout(() => {
-      this.props.todoStore.addTodoItem(new TodoItemModel('t4', 'd4', '04.02.2021'))
+      this.props.todoStore.saveTodoItem(new TodoItemModel('t4', 'd4', '04.02.2021'))
     }, 2000) */
   }
   todoTitleChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +85,11 @@ class StyledTodoList extends Component<IProps, IState> {
   todoDateChangedHandler = (date: Date | null) => {
     this.props.todoStore.setTodoDate(date)
   }
+  todoIsDoneChangedHandler = (todoItemId: number) => {
+    this.props.todoStore.setCurrentTodoId(todoItemId)
+    this.props.todoStore.setTodoDone(true)
+    this.props.todoStore.saveTodoItem()
+  }
   // открыть диалог добавления
   addTodoControlClickHandler = () => {
     this.setState({addTodoDialogOpen: true})
@@ -90,7 +98,7 @@ class StyledTodoList extends Component<IProps, IState> {
     this.setState({addTodoDialogOpen: false})
   }
   addTodoDialogAddHandler = () => {
-    this.props.todoStore.addTodoItem()
+    this.props.todoStore.saveTodoItem()
     this.setState({addTodoDialogOpen: false})
   }
   addTodoDialogClosedHandler = () => {
@@ -117,7 +125,7 @@ class StyledTodoList extends Component<IProps, IState> {
           {
             todoList.map((todoItem, idx) => (
                 <Grid item key={idx} xs={12} sm={6} lg={4} xl={3}>
-                  <Card className={classes.card && classes.newTaskCard}>
+                  <Card className={classes.card && (todoItem.done) ? classes.completedTaskCard : classes.newTaskCard}>
                     <CardContent>
                       <Typography variant="h5" component="h2">
                         {todoItem.title}
@@ -130,7 +138,7 @@ class StyledTodoList extends Component<IProps, IState> {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small">Done</Button>
+                      <Button onClick={() => this.todoIsDoneChangedHandler(todoItem.id)} size="small">Done</Button>
                     </CardActions>
                   </Card>
                 </Grid>
